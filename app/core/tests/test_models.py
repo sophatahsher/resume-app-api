@@ -1,8 +1,13 @@
 """
 Test for models.
 """
+from decimal import Decimal
+
+from unittest.mock import patch
 from django.test import TestCase
 from django.contrib.auth import get_user_model
+
+from core import models
 
 
 class ModelTests(TestCase):
@@ -45,3 +50,28 @@ class ModelTests(TestCase):
 
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
+
+    def test_create_resume(self):
+        """Test creating a resume is successful."""
+        user = get_user_model().objects.create_user(
+            'test@example.com',
+            '123456'
+        )
+        recipe = models.Recipe.objects.create(
+            user=user,
+            title='Avocado Durian Smoothie Recipe',
+            description='How to create avocado durian smoothie',
+            time_minutes=15,
+            price=Decimal('4.50')
+        )
+
+        self.assertEqual(str(recipe), recipe.title)
+
+    @patch('core.models.uuid.uuid4')
+    def test_recipe_file_name_uuid(self, mock_uuid):
+        """Test generating image path."""
+        uuid = 'test-uuid'
+        mock_uuid.return_value = uuid
+        file_path = models.recipe_image_file_path(None, 'example.jpg')
+
+        self.assertEqual(file_path, f'uploads/recipe/{uuid}.jpg')

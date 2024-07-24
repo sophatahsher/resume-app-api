@@ -26,18 +26,13 @@ RUN python -m venv /py && \
         --disabled-password \
         --no-create-home \
         django-user && \
-    #mkdir -p /vol/web/media && \
-    #mkdir -p /vol/web/static && \
-    #chown -R django-user:django-user /vol && \
+    mkdir -p /vol/web/media && \
+    mkdir -p /vol/web/static && \
+    chown -R django-user:django-user /vol && \
     chown -R django-user:django-user /app && \
     chmod -R 775 /app && \
-    #chmod -R 755 /vol && \
+    chmod -R 755 /vol && \
     chmod -R +x /scripts
-
-        #django-user && \
-    #mkdir -p /app/db && \
-    #chown -R django-user:django-user /app && \
-    #chmod -R 775 /app
 
 #ENV PATH="/py/bin:$PATH"
 ENV PATH="/scripts:/py/bin:$PATH"
@@ -46,4 +41,4 @@ ENV PATH="/scripts:/py/bin:$PATH"
 USER root
 #USER django-user
 
-#CMD ["run.sh"]
+CMD ["run.sh"]

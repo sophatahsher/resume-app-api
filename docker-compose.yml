@@ -12,6 +12,7 @@ services:
       - "8000:8000"
     volumes:
       - ./app:/app
+      - ./dev-static-data:/vol/web
     command: >
       sh -c "python manage.py test &&
              python manage.py migrate &&
@@ -36,5 +37,5 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=123456789
 volumes:
-  app:
   dev-db-data:
+  dev-static-data:
